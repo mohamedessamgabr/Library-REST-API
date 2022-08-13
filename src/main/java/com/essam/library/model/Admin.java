@@ -17,6 +17,7 @@ public class Admin {
     @Column(name = "admin_role")
     private String role;
 
+
     public Admin() {
     }
 

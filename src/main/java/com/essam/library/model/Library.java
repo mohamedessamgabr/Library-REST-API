@@ -16,18 +16,17 @@ public class Library {
     @Column(name = "contact_no")
     private String contactNo;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "admin_id")
     private Admin admin;
 
     public Library() {
     }
 
-    public Library(String name, String address, String contactNo, Admin admin) {
+    public Library(String name, String address, String contactNo) {
         this.name = name;
         this.address = address;
         this.contactNo = contactNo;
-        this.admin = admin;
     }
 
     public String getName() {

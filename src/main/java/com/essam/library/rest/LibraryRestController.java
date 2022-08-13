@@ -1,6 +1,7 @@
 package com.essam.library.rest;
 
 import com.essam.library.model.Library;
+import com.essam.library.model.request.LibraryAdminRequest;
 import com.essam.library.service.LibraryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -45,5 +46,10 @@ public class LibraryRestController {
         }
         libraryService.deleteByName(name);
         return "Library with name: " + name + " has been deleted";
+    }
+
+    @PostMapping("/assign-admin")
+    public String AssignAdminToLibrary(@RequestBody LibraryAdminRequest libraryAdminRequest) {
+        return libraryService.assignAdminToLibrary(libraryAdminRequest);
     }
 }
