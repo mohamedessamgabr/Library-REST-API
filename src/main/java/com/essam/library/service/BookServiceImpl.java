@@ -1,9 +1,9 @@
 package com.essam.library.service;
 
-import com.essam.library.model.Book;
-import com.essam.library.model.Library;
-import com.essam.library.model.Vendor;
+import com.essam.library.model.*;
+import com.essam.library.model.request.AuthorBookRequest;
 import com.essam.library.model.request.LibraryBookRequest;
+import com.essam.library.model.request.PublisherBookRequest;
 import com.essam.library.model.request.VendorBookRequest;
 import com.essam.library.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +21,19 @@ public class BookServiceImpl implements BookService{
 
     private final VendorService vendorService;
 
+    private final AuthorService authorService;
+
+    private final PublisherService publisherService;
+
+    private final EmployeeService employeeService;
     @Autowired
-    public BookServiceImpl(BookRepository bookRepository, LibraryService libraryService, VendorService vendorService) {
+    public BookServiceImpl(BookRepository bookRepository, LibraryService libraryService, VendorService vendorService, AuthorService authorService, PublisherService publisherService, EmployeeService employeeService) {
         this.bookRepository = bookRepository;
         this.libraryService = libraryService;
         this.vendorService = vendorService;
+        this.authorService = authorService;
+        this.publisherService = publisherService;
+        this.employeeService = employeeService;
     }
 
     @Override
@@ -69,5 +77,31 @@ public class BookServiceImpl implements BookService{
         book.setVendor(vendor);
         bookRepository.save(book);
         return "Saved";
+    }
+
+    @Override
+    public String publishBook(PublisherBookRequest publisherBookRequest) {
+        Book book = this.findById(publisherBookRequest.getBookId());
+        Publisher publisher = publisherService.findById(publisherBookRequest.getPublisherCode());
+        book.setPublisher(publisher);
+        bookRepository.save(book);
+        return "Published";
+    }
+
+    @Override
+    public String assignAuthorToBook(AuthorBookRequest authorBookRequest) {
+        Book book = this.findById(authorBookRequest.getBookId());
+        Author author = authorService.findById(authorBookRequest.getAuthorCode());
+        book.setAuthor(author);
+        bookRepository.save(book);
+        return "Assigned";
+    }
+
+    @Override
+    public void employeeIssueOrReceiveBook(int employeeId, int bookId) {
+        Book book = findById(bookId);
+        Employee employee = employeeService.getById(employeeId);
+        book.setEmployee(employee);
+        bookRepository.save(book);
     }
 }

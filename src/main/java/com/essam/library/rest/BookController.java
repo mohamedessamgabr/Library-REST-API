@@ -1,10 +1,10 @@
 package com.essam.library.rest;
 
 import com.essam.library.model.Book;
-import com.essam.library.model.request.LibraryBookRequest;
-import com.essam.library.model.request.VendorBookRequest;
+import com.essam.library.model.request.*;
 import com.essam.library.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -53,4 +53,23 @@ public class BookController {
     public String vendorSellsBook(@RequestBody VendorBookRequest vendorBookRequest) {
         return bookService.vendorSellsBook(vendorBookRequest);
     }
+
+    @PutMapping("/publish-book")
+    public String publishBook(@RequestBody PublisherBookRequest publisherBookRequest) {
+        return bookService.publishBook(publisherBookRequest);
+    }
+
+    @PutMapping("/assign-author-to-book")
+    public String assignAuthorToBook(@RequestBody AuthorBookRequest authorBookRequest) {
+        return bookService.assignAuthorToBook(authorBookRequest);
+    }
+
+    @PutMapping("/employee-issue-receive-book")
+    public ResponseEntity<?> employeeIssueOrReceiveBook(@RequestBody EmployeeBookRequest employeeBookRequest) { {
+        bookService.employeeIssueOrReceiveBook(employeeBookRequest.getEmployeeId(), employeeBookRequest.getBookId());
+        return ResponseEntity.ok().build();
+    }
+
+    }
+
 }
